@@ -21,15 +21,45 @@ FROM → WHERE → SELECT → ORDER BY
     FROM country
     WHERE population < 1000;
 -------------------------------------------------------------------------------------
+🕌 Countries with Arabic spoken by over 80% of the population
+    SELECT countrycode
+           percentage
+    FROM countrylanguage
+    WHERE language = 'Arabic' AND percentage > 80;
+-------------------------------------------------------------------------------------
+🧾 Customers from Singapore, sorted by name
+    SELECT c.customernumber,
+           c.customername,
+           c.city
+    FROM customers c
+    WHERE country = 'Singapore'
+    ORDER BY customername ASC;
+-------------------------------------------------------------------------------------
+🛍️ Number of products per vendor
+    SELECT productvendor, 
+           COUNT(productcode) AS num_of_products            //COUNT counts the rows in a table
+    FROM products
+    GROUP BY productvendor
+    ORDER BY productvendor;
+-------------------------------------------------------------------------------------
+📉 Total payments with formatting
+    SELECT 
+           FORMAT(SUM(amount), 2) AS totalpayments
+    FROM payments
+    WHERE YEAR(paymentdate) = 2003;
+-------------------------------------------------------------------------------------
 🏛️ Countries with 'Republic' in the government form
-SELECT name, continent, governmentform
-FROM country
-WHERE governmentform LIKE '%Republic%';
+    SELECT 
+           name, 
+           continent, 
+           governmentform
+    FROM country
+    WHERE governmentform LIKE '%Republic%';
 -------------------------------------------------------------------------------------
 🧭 Query to List Countries Where English Is Spoken (with Aliased Column Names)
     SELECT 
-      c.name AS country_name, 
-      c.continent AS region,
+           c.name AS country_name, 
+           c.continent AS region,
     FROM countrylanguage cl
     JOIN country c
       ON c.code = cl.countrycode
