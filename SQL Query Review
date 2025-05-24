@@ -11,6 +11,21 @@ FROM → WHERE → SELECT → ORDER BY
     FROM country
     WHERE lifeexpectancy BETWEEN 70 AND 80;
 -------------------------------------------------------------------------------------
+🧭 Continents of countries with population < 1000
+    SELECT continent
+    FROM country
+    WHERE population < 1000;
+-------------------------------------------------------------------------------------
+🗺️ Unique continents of countries with low population
+    SELECT DISTINCT continent
+    FROM country
+    WHERE population < 1000;
+-------------------------------------------------------------------------------------
+🏛️ Countries with 'Republic' in the government form
+SELECT name, continent, governmentform
+FROM country
+WHERE governmentform LIKE '%Republic%';
+-------------------------------------------------------------------------------------
 🧭 Query to List Countries Where English Is Spoken (with Aliased Column Names)
     SELECT 
       c.name AS country_name, 
