@@ -1,0 +1,23 @@
+🧭 Recommended Thinking Order:
+FROM → WHERE → SELECT → ORDER BY
+-------------------------------------------------------------------------------------
+🌆 All cities in Thailand with population > 10,000
+    SELECT *
+    FROM city
+    WHERE countrycode = 'THA' AND population > 10000;
+-------------------------------------------------------------------------------------
+🌍 Countries with life expectancy between 70 and 80
+    SELECT *
+    FROM country
+    WHERE lifeexpectancy BETWEEN 70 AND 80;
+-------------------------------------------------------------------------------------
+🧭 Query to List Countries Where English Is Spoken (with Aliased Column Names)
+    SELECT 
+      c.name AS country_name, 
+      c.continent AS region,
+    FROM countrylanguage cl
+    JOIN country c
+      ON c.code = cl.countrycode
+    WHERE cl.language = 'English'
+    ORDER BY c.name;
+-------------------------------------------------------------------------------------
