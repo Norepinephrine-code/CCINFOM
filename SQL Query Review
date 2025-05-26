@@ -1,5 +1,7 @@
 🧭 Recommended Thinking Order:
 FROM → WHERE → SELECT → ORDER BY
+Take Note:
+JOIN is always used with ON.
 -------------------------------------------------------------------------------------
 🌆 All cities in Thailand with population > 10,000
     SELECT *
@@ -66,3 +68,70 @@ FROM → WHERE → SELECT → ORDER BY
     WHERE cl.language = 'English'
     ORDER BY c.name;
 -------------------------------------------------------------------------------------
+Get the total number of employees per office country
+    SELECT o.country, 
+           COUNT(e.employeenumber) AS numofemployees
+    FROM office o
+    JOIN employees e 
+    ON o.officecode = e.officecode
+    GROUP BY o.country
+-------------------------------------------------------------------------------------
+Generate a list of products included in order number 10120
+    SELECT DISTINCT p.productname
+    FROM products p
+    JOIN orderdetails od 
+    ON p.productcode = od.productcode
+    WHERE od.ordernumber = '10120'
+-------------------------------------------------------------------------------------
+Get the total sales per year.
+    SELECT YEAR(o.orderdate) AS year,
+           SUM(od.quantityordered*od.priceeach) AS totalsales
+    FROM orders o
+    JOIN orderdetails od 
+    ON o.orderdnumber = od.ordernumber
+    GROUP BY YEAR(o.orderdate)
+OR
+    GROUP BY year
+    ORDER BY year
+-------------------------------------------------------------------------------------
+    SELECT c.customerNumber, 
+                 c.customerName, 
+                 c.country,
+                e.firstName || ' ' || e.lastName AS fullNameOfSalesRep
+    FROM customers c
+    JOIN employees e
+    ON c.SalesRepEmployeeNumber = e.employeeNumber;
+-------------------------------------------------------------------------------------
+    SELECT o.orderNumber, o.orderDate, o.shippedDate, o.status, o.customerName
+    FROM orders o
+    JOIN customers c
+    ON o.customerNumber = c.customerNumber
+    WHERE o.status = 'Shipped' AND o.shippedDate BETWEEN '2005-05-01' AND '2005-05-31'
+    ORDER BY o.ordernumber;
+-------------------------------------------------------------------------------------
+Generate the list of products below 300 pieces. Show in the list the product's code
+and name, and the product line the product belongs to.
+    SELECT p.productCode,
+           p.productName, 
+           p.productLine,
+           p.quantityInStock
+    FROM   products p
+    WHERE  p.quantityInStock < 300
+    ORDER BY p.productCode;
+-------------------------------------------------------------------------------------
+SELECT  columns
+FROM table 1
+RIGHT JOIN table 2
+ON column1=column2
+-------------------------------------------------------------------------------------
+SELECT s.name, s.gradelevel, sd.fruitcode, sd.qty
+FROM student s
+LEFT JOIN studentdonations sd
+ON s.name=sd.studentname
+ORDER BY s.name;
+
+-------------------------------------------------------------------------------------
+
+
+
+
