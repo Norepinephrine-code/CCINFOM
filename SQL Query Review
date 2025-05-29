@@ -118,18 +118,18 @@ and name, and the product line the product belongs to.
     FROM   products p
     WHERE  p.quantityInStock < 300
     ORDER BY p.productCode;
--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 SELECT  columns
 FROM table 1
 RIGHT JOIN table 2
 ON column1=column2
--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 SELECT s.name, s.gradelevel, sd.fruitcode, sd.qty
 FROM student s
 LEFT JOIN studentdonations sd
 ON s.name=sd.studentname
 ORDER BY s.name;
--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 
 SELECT e.emp_no, e.last_name, e.first_name, dm.dept_no, dm.from_date 
 FROM employees e
@@ -137,13 +137,13 @@ LEFT JOIN dept_manager dm
 ON e.emp_no = dm.emp_no
 ORDER BY dm.from_date DESC;
 
--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 SELECT e.emp_no, e.last_name, e.first_name, dm.dept_no, dm.from_date 
 FROM employees e
 RIGHT JOIN dept_manager dm 
 ON e.emp_no = dm.emp_no
 ORDER BY dm.from_date DESC;
--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 SELECT e.emp_no, e.last_name, e.first_name, t.title
 FROM employees e
 LEFT JOIN titles t
@@ -152,13 +152,33 @@ ORDER BY t.title, e.last_name, e.first_name;
 
 Remember: Titles can change so every title change is a new entry that is why there
           are more entries logged in here.
+--------------------------------------------------------------------------------------------
 
+SELECT d.dept_name, dm.emp_no, dm.from_date
+FROM departments d
+LEFT JOIN dept_manager dm
+ON d.dept_no=dm.dept_no
+ORDER BY d.dept_name, dm.from_date DESC
 
+--------------------------------------------------------------------------------------------
 
+SELECT p.productCode, CONCAT(p.productLine,": ", p.productName), p.productVendor
+FROM products p
+WHERE p.quantityinStock < 100
 
+--------------------------------------------------------------------------------------------
 
+SELECT p.productCode, CONCAT(p.productLine,": ", p.productName) AS product, p.productVendor
+FROM products p
+WHERE SUBSTR(p.productName,1,4) = 1999;
 
+--------------------------------------------------------------------------------------------
 
+SELECT p.productCode, CONCAT(p.productLine,": ", p.productName) AS product, p.productVendor
+FROM products p
+WHERE SUBSTR(p.productName,1,4) >= 1940 && SUBSTR(p.productName,1,4) <= 1950
+
+--------------------------------------------------------------------------------------------
 
 
 
