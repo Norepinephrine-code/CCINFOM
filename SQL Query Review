@@ -129,8 +129,57 @@ FROM student s
 LEFT JOIN studentdonations sd
 ON s.name=sd.studentname
 ORDER BY s.name;
+-------------------------------------------------------------------------------------
+
+SELECT e.emp_no, e.last_name, e.first_name, dm.dept_no, dm.from_date 
+FROM employees e
+LEFT JOIN dept_manager dm 
+ON e.emp_no = dm.emp_no
+ORDER BY dm.from_date DESC;
 
 -------------------------------------------------------------------------------------
+SELECT e.emp_no, e.last_name, e.first_name, dm.dept_no, dm.from_date 
+FROM employees e
+RIGHT JOIN dept_manager dm 
+ON e.emp_no = dm.emp_no
+ORDER BY dm.from_date DESC;
+-------------------------------------------------------------------------------------
+SELECT e.emp_no, e.last_name, e.first_name, t.title
+FROM employees e
+LEFT JOIN titles t
+ON e.emp_no = t.emp_no
+ORDER BY t.title, e.last_name, e.first_name;
+
+Remember: Titles can change so every title change is a new entry that is why there
+          are more entries logged in here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
