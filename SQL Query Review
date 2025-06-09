@@ -254,56 +254,80 @@ Aggregate Functions:
 
 WHERE      --->     When values come from the fields
 HAVING     --->     When values come from our functions
+
+Simple Conditions vs Subquery
+Conditions 	---> 	A condition that compares a column to a fixed value.
+Subquery	--->	A condition that compares a column to the result of another query.
 -------------------------------------------------------------------------------------
 
-SELECT c.customerNumber,
-        c.customerName,
-        FORMAT(SUM(od.quantityOrdered*od.priceEach), '#,###.##') as TOTALSALES
-                                                ------> ROUND(SUM(od.quantityOrdered*od.priceEach), 2) as TOTALSALES
-                                                ------> FORMAT(ROUND(SUM(od.quantityOrdered*od.priceEach), 2), '#,###.##') as TOTALSALES
-FROM customers c
-JOIN orders o
-ON o.customerNumber = c.customerNumber
-JOIN orderdetails od
-ON od.orderNumber = o.orderNumber
-WHERE o.status = 'Shipped' AND YEAR (o.orderDate) = '2005'
-GROUP BY c.customerNumber, c.customerName
-ORDER BY TOTALSALES DESC                            ------> ORDER BY SUM(od.quantityOrdered*od.priceEach) DESC
-                                                    ------> It only looks at it as a String    
+	SELECT c.customerNumber,
+	        c.customerName,
+	        FORMAT(SUM(od.quantityOrdered*od.priceEach), '#,###.##') as TOTALSALES
+	                                                ------> ROUND(SUM(od.quantityOrdered*od.priceEach), 2) as TOTALSALES
+	                                                ------> FORMAT(ROUND(SUM(od.quantityOrdered*od.priceEach), 2), '#,###.##') as TOTALSALES
+	FROM customers c
+	JOIN orders o
+	ON o.customerNumber = c.customerNumber
+	JOIN orderdetails od
+	ON od.orderNumber = o.orderNumber
+	WHERE o.status = 'Shipped' AND YEAR (o.orderDate) = '2005'
+	GROUP BY c.customerNumber, c.customerName
+	ORDER BY TOTALSALES DESC                            ------> ORDER BY SUM(od.quantityOrdered*od.priceEach) DESC
+	                                                    ------> It only looks at it as a String    
 -------------------------------------------------------------------------------------
 
-SELECT YEAR (o.orderDate) as ORDERYEAR,
-			MONTHNAME(o.orderDate) as ORDERMONTH,
-			COUNT(o.orderNumber) as NUMORDERS,
-            ROUND(SUM(od.quantityOrdered*od.priceEach),2) as TOTALSALES
-FROM orders o
-JOIN orderdetails od
-ON o.orderNumber = od.orderNumber
-JOIN products p
-ON p.productCode = od.productCode
-WHERE p.productLine = 'Classic Cars' AND p.productScale = '1:10'
-GROUP BY ORDERYEAR, ORDERMONTH
-HAVING TOTALSALES < 100000
-ORDER BY ORDERYEAR;
+	SELECT YEAR (o.orderDate) as ORDERYEAR,
+				MONTHNAME(o.orderDate) as ORDERMONTH,
+				COUNT(o.orderNumber) as NUMORDERS,
+	            ROUND(SUM(od.quantityOrdered*od.priceEach),2) as TOTALSALES
+	FROM orders o
+	JOIN orderdetails od
+	ON o.orderNumber = od.orderNumber
+	JOIN products p
+	ON p.productCode = od.productCode
+	WHERE p.productLine = 'Classic Cars' AND p.productScale = '1:10'
+	GROUP BY ORDERYEAR, ORDERMONTH
+	HAVING TOTALSALES < 100000
+	ORDER BY ORDERYEAR;
 
 -------------------------------------------------------------------------------------
+=====================================================================================
+-------------------------------------------------------------------------------------
+<> means not equal to
 
-SELECT YEAR (o.orderDate) as ORDERYEAR,
-        e.lastName,
-        e.firstName,
-        oc.country,
-        ROUND(SUM(od.quantityOrdered*od.priceEach),2) as TOTALSALES
-FROM    offices oc
-JOIN    employees e ON e.officeCode=oc.officeCode
-JOIN    customers c ON e.employeeNumber=c.salesRepEployeeNumber
-JOIN    orders o ON o.customerNumber=c.customerNumber
-JOIN    
+[INCORRECT] 
+	SELECT DNAME
+	FROM ORDERS
+	WHERE YEAR(DATEPROC) <> 2010;
 
+[CORRECT] 	SQL Subquery
+	SELECT DNAME
+	FROM DEPARTMENT
+	WHERE DNAME NOT IN (SELECT  DISTINCT(DNAME)
+			    FROM ORDERS
+			    WHERE YEAR(DATEPROC) = 2010);
+-------------------------------------------------------------------------------------
+[INCORRECT] 
+	SELECT E.NAME, E.DNAME
+	FROM EMPLOYEE E
+	JOIN EMPLOYEE_PROJECT EP ON E.ENUM<>EP.NUM;
+
+This does not work because the EMPLOYEE_PROJECT table only contains employees who were part of projects.
+
+[CORRECT] 	SQL Subquery
+	SELECT NAME, DNAME
+	FROM EMPLOYEE
+	WHERE ENUM NOT IN ( SELECT ENUM
+				FROM EMPLOYEE_PROJECT);
+Get the list of Employees (name and dep) who were never part of any project.
 -------------------------------------------------------------------------------------
 
-
-
-
+SELECT ENUM
+FROM EMPLOYEE_JOBS
+WHERE JOBTITLE='J1'
+AND ENUM NOT IN (SELECT ENUM
+		 FROM EMPLOYEE_ENGINEERS);
+	
 
 
 
