@@ -329,6 +329,20 @@ AND ENUM NOT IN (SELECT ENUM
 		 FROM EMPLOYEE_ENGINEERS);
 	
 
+-------------------------------------------------------------------------------------
+dbprojects.sql
 
-
+SELECT LIST1.DNAME,
+       LIST1.COUNTEMPLOYEE,
+       LIST2.NUMOFEQUIPMENT
+FROM 
+    (SELECT DNAME, COUNT(ENUM) AS `COUNTEMPLOYEE` #Result: Count of Employees per Department
+     FROM EMPLOYEE
+     GROUP BY DNAME) AS LIST1
+JOIN 
+    (SELECT O.DNAME, COUNT(EQUIPMENT) AS `NUMOFEQUIPMENT` #Result: Count of Equipment Ordered per Department
+     FROM ORDERS O 
+     JOIN ORDERDETAILS OD ON O.ORDERCODE = OD.ORDERCODE
+     GROUP BY O.DNAME) AS LIST2
+ON LIST1.DNAME = LIST2.DNAME;							#Logic: Combine the results according to their Department Names
 
